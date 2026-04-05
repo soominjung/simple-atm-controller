@@ -94,3 +94,22 @@ class TestCheckBalance:
         controller.enter_pin("1234")
         with pytest.raises(RuntimeError):
             controller.check_balance()
+
+class TestDeposit:
+    def test_success(self):
+        controller = ATMController(bank_api=MockBankAPI(), cash_bin=MockCashBin(cash_amount=1000))
+        card = "1111-2222-3333-4444"
+        controller.insert_card(card)
+        controller.enter_pin("1234")
+        controller.select_account("Checking")
+        controller.deposit(500)
+        assert controller._selected_account.balance == 1500
+        assert controller._cash_bin._cash_amount == 1500
+
+    def test_no_account_selected(self):
+        controller = ATMController(bank_api=MockBankAPI(), cash_bin=MockCashBin(cash_amount=1000))
+        card = "1111-2222-3333-4444"
+        controller.insert_card(card)
+        controller.enter_pin("1234")
+        with pytest.raises(RuntimeError):
+            controller.deposit(500)
