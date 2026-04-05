@@ -1,9 +1,11 @@
 from atm.bank import BankAPI
+from atm.cashbin import CashBin
 
 class ATMController:
-    def __init__(self, bank_api: BankAPI):
+    def __init__(self, bank_api: BankAPI, cash_bin: CashBin):
         self._card = None
         self._bank_api = bank_api
+        self._cash_bin = cash_bin
         self._authenticated = False
         self._selected_account = None
 
@@ -30,3 +32,17 @@ class ATMController:
                 self._selected_account = account
                 return
         raise RuntimeError("Account type not found")
+    
+    def check_balance(self):
+        # TODO: return the balance of the selected account
+        pass
+
+    def deposit(self, amount):
+        # TODO: let the cash bin receive cash
+        # TODO: update the account balance accordingly
+        pass
+
+    def withdraw(self, amount):
+        # TODO: let the cash bin dispense cash if there is enough balance and cash in the bin 
+        # TODO: update the account balance accordingly
+        pass
