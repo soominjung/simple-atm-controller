@@ -29,11 +29,21 @@ tests/
 
 ## Usages
 ```
-# Install dependencies
+# Clone the repository
+git clone https://github.com/soominjung/simple-atm-controller.git
+cd simple-atm-controller
+
+# Install dependencies (uv)
 uv sync
 
-# Run tests
+# Install dependencies (pip)
+pip install pytest
+
+# Run tests (uv)
 uv run pytest -v
+
+# Run tests (pip)
+pytest -v
 ```
 
 ## Requirements
