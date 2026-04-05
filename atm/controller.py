@@ -1,7 +1,7 @@
-
+from atm.bank import BankAPI
 
 class ATMController:
-    def __init__(self, bank_api):
+    def __init__(self, bank_api: BankAPI):
         self._card = None
         self._bank_api = bank_api
         self._authenticated = False
