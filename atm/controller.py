@@ -34,8 +34,10 @@ class ATMController:
         raise RuntimeError("Account type not found")
     
     def check_balance(self):
-        # TODO: return the balance of the selected account
-        pass
+        # return the balance of the selected account
+        if not self._selected_account:
+            raise RuntimeError("No account selected")
+        return self._selected_account.balance
 
     def deposit(self, amount):
         # TODO: let the cash bin receive cash
