@@ -6,6 +6,7 @@ class BankAccount:
         self.balance = balance
 
 class BankAPI(ABC):
+    # Abstract base class for bank API
     @abstractmethod
     def validate_pin(self, card: str, pin: str) -> bool:
         pass
@@ -14,6 +15,7 @@ class BankAPI(ABC):
         pass
 
 class MockBankAPI(BankAPI):
+    # Mock implementation of BankAPI for testing
     def __init__(self):
         self._valid_cards = {
             "1111-2222-3333-4444": "1234",
