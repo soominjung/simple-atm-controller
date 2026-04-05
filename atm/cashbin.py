@@ -15,9 +15,10 @@ class MockCashBin(CashBin):
         self._cash_amount = cash_amount
 
     def dispense_cash(self, amount: int) -> bool:
-        # TODO: check if there is enough cash to withdraw and dispense it
+        if self._cash_amount < amount:
+            return False
+        self._cash_amount -= amount
         return True
 
-    def receive_cash(self, amount: int) -> bool:
+    def receive_cash(self, amount: int):
         self._cash_amount += amount
-        return True
