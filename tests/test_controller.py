@@ -52,6 +52,7 @@ class TestSelectAccount:
             controller.select_account("Checking")
 
     def test_empty_accounts_list(self):
+        # Select account type but accounts list for the card is empty
         controller = ATMController(bank_api=MockBankAPI(), cash_bin=MockCashBin(cash_amount=1000))
         card = "9999-0000-1111-2222"
         controller.insert_card(card)
@@ -59,7 +60,8 @@ class TestSelectAccount:
         with pytest.raises(RuntimeError):
             controller.select_account("Checking")
 
-    def test_card_not_in_accounts(self):
+    def test_card_not_in_accounts_list(self):
+        # Select account type but accounts list for the card doesn't exist
         controller = ATMController(bank_api=MockBankAPI(), cash_bin=MockCashBin(cash_amount=1000))
         card = "3333-4444-5555-6666"
         controller.insert_card(card)
@@ -74,3 +76,21 @@ class TestSelectAccount:
         controller.enter_pin("1234")
         with pytest.raises(RuntimeError):
             controller.select_account("Investment")
+
+class TestCheckBalance:
+    def test_success(self):
+        controller = ATMController(bank_api=MockBankAPI(), cash_bin=MockCashBin(cash_amount=1000))
+        card = "1111-2222-3333-4444"
+        controller.insert_card(card)
+        controller.enter_pin("1234")
+        controller.select_account("Checking")
+        balance = controller.check_balance()
+        assert balance == 1000
+
+    def test_no_account_selected(self):
+        controller = ATMController(bank_api=MockBankAPI(), cash_bin=MockCashBin(cash_amount=1000))
+        card = "1111-2222-3333-4444"
+        controller.insert_card(card)
+        controller.enter_pin("1234")
+        with pytest.raises(RuntimeError):
+            controller.check_balance()
