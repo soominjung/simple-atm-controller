@@ -50,6 +50,11 @@ class ATMController:
         self._selected_account.balance += amount
 
     def withdraw(self, amount):
-        # TODO: let the cash bin dispense cash if there is enough balance and cash in the bin 
-        # TODO: update the account balance accordingly
-        pass
+        # Dispence cash from the bin and update the account balance
+        if not self._selected_account:
+            raise RuntimeError("No account selected")
+        if self._selected_account.balance < amount:
+            raise RuntimeError("Not enough balance")
+        if not self._cash_bin.dispense_cash(amount):
+            raise RuntimeError("Not enough cash in the bin")
+        self._selected_account.balance -= amount
