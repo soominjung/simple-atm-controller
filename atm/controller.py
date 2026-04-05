@@ -10,11 +10,13 @@ class ATMController:
         self._selected_account = None
 
     def insert_card(self, card):
+        # Insert a card into the ATM
         if self._card is not None:
             raise RuntimeError("Card already inserted")
         self._card = card
 
     def enter_pin(self, pin):
+        # Validate the entered PIN for the inserted card using the bank API
         if self._card is None:
             raise RuntimeError("Card not inserted yet")
         if not self._bank_api.validate_pin(self._card, pin):
@@ -22,6 +24,7 @@ class ATMController:
         self._authenticated = True
 
     def select_account(self, account_type):
+        # Select account by account_type for the current authenticated card
         if not self._authenticated:
             raise RuntimeError("Not authenticated")
         accounts = self._bank_api.get_accounts(self._card)
@@ -34,15 +37,17 @@ class ATMController:
         raise RuntimeError("Account type not found")
     
     def check_balance(self):
-        # return the balance of the selected account
+        # Check balance of the selected account
         if not self._selected_account:
             raise RuntimeError("No account selected")
         return self._selected_account.balance
 
     def deposit(self, amount):
-        # TODO: let the cash bin receive cash
-        # TODO: update the account balance accordingly
-        pass
+        # Receive cash into the bin and update the account balance
+        if not self._selected_account:
+            raise RuntimeError("No account selected")
+        self._cash_bin.receive_cash(amount)
+        self._selected_account.balance += amount
 
     def withdraw(self, amount):
         # TODO: let the cash bin dispense cash if there is enough balance and cash in the bin 
